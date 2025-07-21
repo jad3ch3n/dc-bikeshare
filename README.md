@@ -44,7 +44,7 @@ This project explores usage patterns in Washington D.C.’s bike-sharing system 
 
 ## 🖼️ Sample Visuals
 
-![Joint KDE Plot](joint_distribution_of_daily_rider_types.png)
+![Joint KDE Plot](images/Bivariate_KDE_Plot_Comparison_of_Registered_vs_Casual_Riders_Legend_by_Working_and_Non_Working_Days.png
 *Joint distribution of casual and registered rides per day*
 
 ![Diurnal Pattern](diurnal_bikes.png)

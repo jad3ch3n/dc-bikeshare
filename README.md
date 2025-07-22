@@ -1,6 +1,6 @@
 # 🚲 Bikeshare Usage Analysis – Washington D.C.
 
-This project explores usage patterns in Washington D.C.’s bike-sharing system using hourly and daily data from 2011–2012. The goal is to understand behavioral trends across different rider types (casual vs. registered), identify temporal and weather-based patterns, and reflect on the limitations of the dataset from an equity standpoint.
+This project explores usage patterns in Washington D.C.’s bike-sharing system using hourly and daily data from 2011 to 2012. I investigate behavioral trends across different rider types (casual vs. registered), identify temporal and weather-based patterns, and reflect on the limitations of the dataset from an equity standpoint.
 
 ---
 
@@ -19,7 +19,7 @@ This project explores usage patterns in Washington D.C.’s bike-sharing system 
   The dataset lacks demographic or geographic identifiers, limiting insight into equity. Proposed improvements include collecting user age, gender, income, and neighborhood.
 
 - **Expansion Proposal:**  
-  Cities with warm climates and existing transit infrastructure—such as San Francisco, Atlanta, and Los Angeles—are recommended for system expansion.
+  Cities with warm climates and existing transit infrastructure, such as San Francisco, Atlanta, and Los Angeles, are recommended for system expansion.
 
 ---
 
@@ -35,8 +35,9 @@ This project explores usage patterns in Washington D.C.’s bike-sharing system 
 
 ## 📁 Files Included
 
-- `bikeshare-analysis.ipynb` – Full exploratory notebook
-- `.png` visualizations – Plots used throughout the analysis
+- `dc-bikeshare.ipynb` – Full exploratory notebook
+- `dc-bikeshare-paper.html` – Final project writeup with visuals and analysis (web-ready)
+- `.png` visualizations – Plots generated throughout the analysis
 - `bikeshare.txt` – Dataset metadata
 - `ds100_utils.py` – Utility functions used in the notebook
 
@@ -56,16 +57,16 @@ This project explores usage patterns in Washington D.C.’s bike-sharing system 
 
 ### Option 1: Locally
 ```bash
-pip install notebook pandas seaborn matplotlib statsmodels
-jupyter notebook bikeshare-analysis.ipynb
+pip install notebook pandas seaborn matplotlib statsmodels ipython
+jupyter notebook dc-bikeshare.ipynb
 ```
 
 ### Option 2: In the Cloud
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jad3ch3n/dc-bikeshare/blob/main/dc-bikeshare.ipynb)
 
 ---
 
 ## ✍️ Author
 
 **Jade Chen**  
-[LinkedIn](https://www.linkedin.com/in/jad3ch3n) | [GitHub](https://github.com/jad3ch3n)
+[Portfolio](https://jad3ch3n.github.io/) | [LinkedIn](https://www.linkedin.com/in/jad3ch3n) | [GitHub](https://github.com/jad3ch3n)

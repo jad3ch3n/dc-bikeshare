@@ -44,10 +44,10 @@ This project explores usage patterns in Washington D.C.’s bike-sharing system 
 
 ## 🖼️ Sample Visuals
 
-![Bivariate KDE Plot](images\Bivariate_KDE_Plot_Comparison_of_Registered_vs_Casual_Riders_Legend_by_Working_and_Non_Working_Days.png)
+![Bivariate KDE Plot](images/Bivariate_KDE_Plot_Comparison_of_Registered_vs_Casual_Riders_Legend_by_Working_and_Non_Working_Days.png)
 *Bivariate KDE Plot Comparison of Registered vs Casual Riders (Legend by Working and Non-Working Days)*
 
-![LOWESS Curves](images\LOWESS_Curves_Temperature_vs_Casual_Rider_Proportion_by_Day_of_the_Week.png)
+![LOWESS Curves](images/LOWESS_Curves_Temperature_vs_Casual_Rider_Proportion_by_Day_of_the_Week.png)
 *LOWESS Curves: Temperature vs. Casual Rider Proportion by Day of the Week*
 
 ---

@@ -1,0 +1,8 @@
+check,result,interpretation
+Rows,17379,Hourly observations across 2011-2012
+Date range,2011-01-01 to 2012-12-31,Two full calendar years
+Missing values,0,No null values detected
+Duplicate rows,0,No exact duplicates detected
+Target consistency,True,Total ridership equals casual + registered in every row
+Distinct days,731,Expected 731 days in range
+Hours observed,697-730 rows per hour,A small number of timestamps are absent in the source data

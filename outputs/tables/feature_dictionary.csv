@@ -1,0 +1,11 @@
+feature,type,why_it_matters
+season_label,Season category,Captures broad annual seasonality
+weather_group,Collapsed weather severity,"Separates clear, cloudy, and precipitation conditions"
+day_type,Working day vs weekend / holiday,Distinguishes commute demand from leisure demand
+hour_band,Grouped hour buckets,Improves readability for stakeholder summaries
+temp_band,Grouped temperature levels,Captures nonlinear weather comfort effects
+hour_sin / hour_cos,Cyclical hour encoding,Preserves circular nature of time-of-day
+month_sin / month_cos,Cyclical month encoding,Preserves seasonality without artificial jumps
+is_rush_hour,AM / PM commute indicator,Highlights peak commuting windows
+is_commute_window,Broader commute proxy,Captures surrounding shoulder periods
+feels_temp_gap,atemp - temp,Proxy for perceived vs measured conditions

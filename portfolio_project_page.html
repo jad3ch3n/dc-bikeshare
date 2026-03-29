@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Washington, D.C. Bikeshare Demand Analysis</title>
+  <style>
+    :root {
+      --bg: #f4f7f8;
+      --surface: rgba(255, 255, 255, 0.86);
+      --surface-strong: #ffffff;
+      --ink: #0f172a;
+      --muted: #475569;
+      --line: rgba(148, 163, 184, 0.22);
+      --blue: #1d4ed8;
+      --teal: #0f766e;
+      --orange: #ea580c;
+      --shadow: 0 18px 40px rgba(15, 23, 42, 0.07);
+      --radius: 24px;
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.08), transparent 24%),
+        linear-gradient(180deg, #f8fbfc 0%, var(--bg) 100%);
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 40px 24px 72px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 28px;
+      align-items: end;
+      padding-bottom: 26px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 6vw, 4.3rem);
+      line-height: 0.98;
+      margin: 0 0 14px;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-copy {
+      font-size: 1.05rem;
+      max-width: 52rem;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .tag-row,
+    .link-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.04);
+      border: 1px solid rgba(15, 23, 42, 0.06);
+      font-size: 0.92rem;
+      color: var(--ink);
+    }
+
+    .link {
+      padding: 11px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--surface-strong);
+      box-shadow: var(--shadow);
+      font-weight: 700;
+    }
+
+    .hero-aside {
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.72));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .aside-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.74rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .aside-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .aside-item b {
+      display: block;
+      font-size: 1.3rem;
+      color: var(--ink);
+    }
+
+    section {
+      padding-top: 34px;
+    }
+
+    .section-kicker {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      margin: 0 0 8px;
+      letter-spacing: -0.03em;
+    }
+
+    .section-copy {
+      color: var(--muted);
+      max-width: 46rem;
+      margin: 0 0 18px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card,
+    .metric-card,
+    .visual-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .metric-card b {
+      display: block;
+      font-size: 1.9rem;
+      margin-top: 8px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 20px;
+    }
+
+    .question-list,
+    .bullet-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+    }
+
+    .question-list li,
+    .bullet-list li {
+      margin-bottom: 8px;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .method-card h3,
+    .insight-card h3,
+    .model-card h3,
+    .visual-card h3 {
+      margin: 0 0 8px;
+      font-size: 1rem;
+    }
+
+    .method-card p,
+    .insight-card p,
+    .model-card p,
+    .visual-card p,
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .visual-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 18px;
+    }
+
+    .visual-card img {
+      width: 100%;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .model-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+    }
+
+    .model-metrics {
+      display: grid;
+      gap: 12px;
+    }
+
+    .model-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.76);
+      border: 1px solid var(--line);
+    }
+
+    .model-row strong {
+      display: block;
+      font-size: 0.98rem;
+    }
+
+    .model-row span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .callout {
+      background: linear-gradient(180deg, rgba(29, 78, 216, 0.1), rgba(15, 118, 110, 0.05));
+      border: 1px solid rgba(29, 78, 216, 0.12);
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .footer-takeaway {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 28px;
+      padding: 28px;
+      margin-top: 34px;
+    }
+
+    .footer-takeaway p {
+      color: #cbd5e1;
+      margin: 0;
+      max-width: 46rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .split,
+      .visual-grid,
+      .model-layout,
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid,
+      .method-grid,
+      .insight-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 24px 16px 56px;
+      }
+
+      .card-grid,
+      .method-grid,
+      .insight-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-card b {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Portfolio Case Study</div>
+        <h1>Washington, D.C. Bikeshare Demand Analysis</h1>
+        <p class="hero-copy">
+          An end-to-end analytics project on how bikeshare demand changes across time, weather, and rider type,
+          with a practical forecasting layer for hourly ridership planning.
+        </p>
+        <div class="tag-row" style="margin-bottom: 16px;">
+          <div class="tag">Python</div>
+          <div class="tag">pandas</div>
+          <div class="tag">Data Visualization</div>
+          <div class="tag">Feature Engineering</div>
+          <div class="tag">Predictive Modeling</div>
+          <div class="tag">Model Evaluation</div>
+        </div>
+        <div class="link-row">
+          <a class="link" href="README.md">Project Overview</a>
+          <a class="link" href="notebooks/dc_bikeshare_case_study.ipynb">Notebook</a>
+          <a class="link" href="app.py">Dashboard App</a>
+        </div>
+      </div>
+      <aside class="hero-aside">
+        <div class="aside-label">At a glance</div>
+        <div class="aside-list">
+          <div class="aside-item"><b>3.29M</b>Total rides analyzed</div>
+          <div class="aside-item"><b>17:00</b>Highest average demand hour</div>
+          <div class="aside-item"><b>Summer</b>Peak season by average volume</div>
+          <div class="aside-item"><b>RMSE 65.35</b>Best total-demand forecast on held-out data</div>
+        </div>
+      </aside>
+    </section>
+
+    <section>
+      <div class="section-kicker">Overview</div>
+      <h2>What this project investigates</h2>
+      <p class="section-copy">
+        This project examines how Washington, D.C. bikeshare usage changes across time, weather, and rider segment,
+        then tests how well hourly ridership can be forecast using calendar and weather features. It is framed as a
+        practical analytics problem for operators who need to anticipate demand shifts, not just describe them after the fact.
+      </p>
+      <div class="card-grid">
+        <div class="metric-card"><span>Average hourly demand</span><b>189.5 rides</b></div>
+        <div class="metric-card"><span>Average daily demand</span><b>4,504 rides</b></div>
+        <div class="metric-card"><span>Casual share</span><b>18.8%</b></div>
+        <div class="metric-card"><span>Registered share</span><b>81.2%</b></div>
+      </div>
+    </section>
+
+    <section class="split">
+      <div>
+        <div class="section-kicker">The Question</div>
+        <h2>What I wanted to answer</h2>
+        <ul class="question-list">
+          <li>How does ridership change by hour, weekday structure, season, and weather?</li>
+          <li>How different are casual and registered riders in the patterns they create?</li>
+          <li>Can hourly demand be predicted well enough to support planning decisions?</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="section-kicker" style="margin-top: 0;">Dataset & Scope</div>
+        <h2 style="font-size: 1.35rem;">Hourly demand from 2011 to 2012</h2>
+        <p style="margin-bottom: 14px;">Capital Bikeshare hourly ridership data covering January 1, 2011 through December 31, 2012.</p>
+        <ul class="bullet-list">
+          <li>Unit of observation: one hour</li>
+          <li>Core targets: total, casual, and registered rides</li>
+          <li>Key fields: hour, weekday, month, season, weather, temperature, humidity, windspeed</li>
+          <li>Main limitation: no rider demographics or station-level geographic detail</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-kicker">Methodology</div>
+      <h2>Compact end-to-end workflow</h2>
+      <p class="section-copy">
+        The project was structured to show full-cycle analytics work without turning the page into a notebook export.
+      </p>
+      <div class="method-grid">
+        <div class="card method-card">
+          <h3>Cleaning</h3>
+          <p>Validated totals, converted dates, checked missing values and duplicates, and mapped encoded fields into readable labels.</p>
+        </div>
+        <div class="card method-card">
+          <h3>EDA</h3>
+          <p>Profiled ridership by time, rider type, season, and weather to surface operational demand patterns.</p>
+        </div>
+        <div class="card method-card">
+          <h3>Feature Engineering</h3>
+          <p>Created rush-hour flags, day-type groupings, cyclical time encodings, and weather buckets to improve clarity and prediction.</p>
+        </div>
+        <div class="card method-card">
+          <h3>Modeling</h3>
+          <p>Compared a baseline mean, linear regression, ridge regression, random forest, and histogram gradient boosting.</p>
+        </div>
+        <div class="card method-card">
+          <h3>Evaluation</h3>
+          <p>Used a chronological train/test split with MAE, RMSE, R², residual inspection, and held-out actual-vs-predicted comparison.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-kicker">Key Insights</div>
+      <h2>What the analysis shows</h2>
+      <div class="insight-grid">
+        <div class="card insight-card">
+          <h3>Commuter demand dominates</h3>
+          <p>Registered riders drive the strongest peaks, especially during weekday rush hours, making bikeshare look heavily commute-oriented.</p>
+        </div>
+        <div class="card insight-card">
+          <h3>Casual riders are weather-sensitive</h3>
+          <p>Casual demand rises on warm weekends and holidays, suggesting a more discretionary, leisure-driven use case.</p>
+        </div>
+        <div class="card insight-card">
+          <h3>Weather matters operationally</h3>
+          <p>Clear-weather demand averages about 93 more hourly rides than precipitation periods, making weather a practical planning signal.</p>
+        </div>
+        <div class="card insight-card">
+          <h3>Demand peaks late afternoon</h3>
+          <p>The highest average hour is 17:00, reinforcing the role of return commuting in total system volume.</p>
+        </div>
+        <div class="card insight-card">
+          <h3>Growth across the study period</h3>
+          <p>Ridership increased meaningfully from 2011 to 2012, indicating stronger adoption as the system matured.</p>
+        </div>
+        <div class="card insight-card">
+          <h3>Nonlinear modeling helps</h3>
+          <p>Tree-based models outperform linear baselines, showing that time, weather, and rider behavior interact in ways a simple linear model misses.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="model-layout">
+      <div>
+        <div class="section-kicker">Modeling</div>
+        <h2>Forecasting total hourly ridership</h2>
+        <p class="section-copy">
+          The main predictive target was total hourly ridership because it is the clearest operational planning signal for rebalancing and staffing.
+        </p>
+        <div class="model-metrics">
+          <div class="model-row">
+            <div>
+              <strong>Histogram gradient boosting</strong>
+              <span>Best total-demand model</span>
+            </div>
+            <div><strong>RMSE 65.35</strong><span>MAE 40.56 · R² 0.895</span></div>
+          </div>
+          <div class="model-row">
+            <div>
+              <strong>Casual ridership forecast</strong>
+              <span>Held-out performance</span>
+            </div>
+            <div><strong>RMSE 17.88</strong><span>MAE 9.79 · R² 0.863</span></div>
+          </div>
+          <div class="model-row">
+            <div>
+              <strong>Registered ridership forecast</strong>
+              <span>Held-out performance</span>
+            </div>
+            <div><strong>RMSE 56.61</strong><span>MAE 34.75 · R² 0.896</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="callout">
+        <h2 style="font-size: 1.3rem; margin-bottom: 10px;">What the results mean</h2>
+        <p style="margin: 0; color: var(--muted);">
+          The forecasting layer is strong enough to support directional planning, but not so strong that it should be treated like a real-time control system.
+          The biggest remaining misses likely come from omitted drivers such as special events, neighborhood-level demand, and transit disruptions.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-kicker">Visual Highlights</div>
+      <h2>Selected charts from the project</h2>
+      <p class="section-copy">
+        These visuals were chosen to reinforce the analytical story quickly rather than reproduce the full notebook.
+      </p>
+      <div class="visual-grid">
+        <article class="visual-card">
+          <img src="outputs/figures/03_hourly_rider_profiles.png" alt="Hourly rider profiles chart">
+          <h3>Commute versus leisure behavior</h3>
+          <p>Registered riders peak sharply on working-day commute windows, while casual demand is flatter and later in the day.</p>
+        </article>
+        <article class="visual-card">
+          <img src="outputs/figures/05_weather_impact.png" alt="Weather impact chart">
+          <h3>Weather changes volume and rider mix</h3>
+          <p>Ridership falls as conditions worsen, but casual share remains highest on leisure-oriented days.</p>
+        </article>
+        <article class="visual-card">
+          <img src="outputs/figures/07_model_comparison.png" alt="Model comparison chart">
+          <h3>Forecast comparison</h3>
+          <p>Tree-based models outperform linear baselines across all demand targets, especially for total rides.</p>
+        </article>
+        <article class="visual-card">
+          <img src="outputs/figures/08_actual_vs_predicted_total_rides.png" alt="Actual versus predicted chart">
+          <h3>Held-out model behavior</h3>
+          <p>The forecast tracks overall demand well, while still struggling most on the busiest hours where peaks are hardest to predict.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="two-col">
+      <div class="card">
+        <div class="section-kicker" style="margin-top: 0;">Limitations</div>
+        <h2 style="font-size: 1.35rem;">What this project does not claim</h2>
+        <ul class="bullet-list">
+          <li>The dataset is observational, so the analysis does not make causal claims.</li>
+          <li>There is no rider demographic data, which limits equity and user-profile analysis.</li>
+          <li>There is no station-level geography in the main workflow, so local rebalancing questions remain out of scope.</li>
+          <li>External drivers like events and transit disruptions are not included and likely explain some residual error.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="section-kicker" style="margin-top: 0;">Next Steps</div>
+        <h2 style="font-size: 1.35rem;">How I would extend it</h2>
+        <ul class="bullet-list">
+          <li>Add station-level modeling for rebalancing and geographic demand planning.</li>
+          <li>Incorporate weather forecasts and event calendars for more operationally useful predictions.</li>
+          <li>Layer in transit and neighborhood context to explain peak shifts more fully.</li>
+          <li>Turn the modeling output into a lightweight reporting workflow or deployed dashboard.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="footer-takeaway">
+      <div class="section-kicker" style="color: #94a3b8; margin-top: 0;">Final Takeaway</div>
+      <h2 style="color: #f8fafc; margin-top: 0;">What this project demonstrates</h2>
+      <p>
+        This case study shows end-to-end analytical work: framing a useful question, cleaning and exploring data,
+        engineering practical features, building and evaluating predictive models, and translating the results into
+        concise business insight. It is designed to read quickly while still signaling real technical depth.
+      </p>
+    </section>
+  </main>
+</body>
+</html>

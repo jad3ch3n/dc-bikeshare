@@ -1,72 +1,110 @@
-# 🚲 Bikeshare Usage Analysis – Washington D.C.
+# Washington, D.C. Bikeshare Demand Analysis
 
-This project explores usage patterns in Washington D.C.’s bike-sharing system using hourly and daily data from 2011 to 2012. I investigate behavioral trends across different rider types (casual vs. registered), identify temporal and weather-based patterns, and reflect on the limitations of the dataset from an equity standpoint.
+## Overview
 
----
+This project is an end-to-end data analytics case study on Washington, D.C. bikeshare demand. It analyzes how ridership changes across time, weather, and rider type, then builds forecasting models to predict hourly demand. The repo now includes both a polished analysis notebook and a Streamlit dashboard so reviewers can either read the case study or interact with the results directly.
 
-## 📊 Project Summary
+## Key Questions
 
-- **User Behavior:**  
-  Registered users tend to ride during weekday commuting hours, while casual users prefer weekends and warmer days.
+- How does bikeshare ridership vary by hour, weekday structure, season, and weather?
+- How do casual and registered riders differ in their usage patterns?
+- Can hourly demand be predicted well enough to support planning and operations?
 
-- **Temporal Trends:**  
-  Hourly usage shows clear rush-hour peaks for registered users. Kernel density estimates visualize different riding habits across working and non-working days.
+## Dataset
 
-- **Temperature Impact:**  
-  LOWESS-smoothed plots show a strong positive relationship between temperature and ridership, especially for casual users.
+- Source: Capital Bikeshare hourly ridership dataset
+- Time span: January 1, 2011 to December 31, 2012
+- Granularity: hourly observations
 
-- **Equity Considerations:**  
-  The dataset lacks demographic or geographic identifiers, limiting insight into equity. Proposed improvements include collecting user age, gender, income, and neighborhood.
+The dataset includes calendar fields, weather conditions, and hourly counts for casual, registered, and total rides.
 
-- **Expansion Proposal:**  
-  Cities with warm climates and existing transit infrastructure, such as San Francisco, Atlanta, and Los Angeles, are recommended for system expansion.
+## Methods
 
----
+- data cleaning and validation
+- exploratory data analysis
+- feature engineering for time, weather, and commute structure
+- statistical comparisons with effect sizes and confidence intervals
+- regression modeling with baseline and tree-based models
+- out-of-sample evaluation using a chronological train/test split
 
-## 🧰 Tools & Technologies
+## Key Findings
 
-- Python
-- Jupyter Notebook
-- Pandas, Seaborn, Matplotlib
-- Statsmodels (LOWESS smoothing)
-- Markdown
+- Registered riders show strong commuting behavior, with the largest peaks on weekday rush hours.
+- Casual riders are much more leisure-oriented and make up a larger share of demand on warm weekends and holidays.
+- Weather matters operationally: ridership is meaningfully lower during precipitation than during clear conditions.
+- Time-of-day is the strongest predictor of demand, but weather and day type add important forecasting signal.
+- Demand increased noticeably from 2011 to 2012, suggesting stronger adoption over time.
 
----
+## Modeling Summary
 
-## 📁 Files Included
+The main forecasting target is total hourly ridership, with supporting models for casual and registered riders. I compared a baseline mean, linear regression, ridge regression, random forest, and histogram gradient boosting using a chronological train/test split.
 
-- `dc-bikeshare.ipynb` – Full exploratory notebook
-- `dc-bikeshare-paper.html` – Final project writeup with visuals and analysis (web-ready)
-- `.png` visualizations – Plots generated throughout the analysis
-- `bikeshare.txt` – Dataset metadata
-- `ds100_utils.py` – Utility functions used in the notebook
+The best-performing model was histogram gradient boosting:
 
----
+- Total rides: RMSE 65.35, MAE 40.56, R2 0.895
+- Casual rides: RMSE 17.88, MAE 9.79, R2 0.863
+- Registered rides: RMSE 56.61, MAE 34.75, R2 0.896
 
-## 🖼️ Sample Visuals
+These results show that nonlinear models capture hourly demand patterns much better than simple baselines.
 
-![Bivariate KDE Plot](images/Bivariate_KDE_Plot_Comparison_of_Registered_vs_Casual_Riders_Legend_by_Working_and_Non_Working_Days.png)
-*Bivariate KDE Plot Comparison of Registered vs Casual Riders (Legend by Working and Non-Working Days)*
+## Dashboard
 
-![LOWESS Curves](images/LOWESS_Curves_Temperature_vs_Casual_Rider_Proportion_by_Day_of_the_Week.png)
-*LOWESS Curves: Temperature vs. Casual Rider Proportion by Day of the Week*
+The Streamlit dashboard turns the analysis into an interactive portfolio piece. It includes:
 
----
+- a concise project intro and KPI summary row
+- filterable views by season, weather, day type, month, and hour range
+- interactive demand charts for time, weekday, season, weather, and rider behavior
+- a modeling section with forecast metrics, feature importance, and actual-vs-predicted demand
+- a scenario tool that predicts total hourly ridership for user-selected conditions
 
-## 🚀 Run It Yourself
+Main app file:
 
-### Option 1: Locally
+- `app.py`
+
+## Limitations
+
+- The dataset is observational, so the project does not make causal claims.
+- There is no demographic data, so rider behavior cannot be analyzed by user characteristics.
+- There is no station-level geographic detail in the main workflow.
+- External drivers such as events and transit disruptions are not included.
+
+## How to Run
+
+Install dependencies:
+
 ```bash
-pip install notebook pandas seaborn matplotlib statsmodels ipython
-jupyter notebook dc-bikeshare.ipynb
+pip install -r requirements.txt
 ```
 
-### Option 2: In the Cloud
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/jad3ch3n/dc-bikeshare/blob/main/dc-bikeshare.ipynb)
+Regenerate outputs:
 
----
+```bash
+python src/generate_outputs.py
+```
 
-## ✍️ Author
+Open the notebook:
 
-**Jade Chen**  
-[Portfolio](https://jad3ch3n.github.io/) | [LinkedIn](https://www.linkedin.com/in/jad3ch3n) | [GitHub](https://github.com/jad3ch3n)
+```bash
+jupyter notebook notebooks/dc_bikeshare_case_study.ipynb
+```
+
+Run the dashboard:
+
+```bash
+streamlit run app.py
+```
+
+## Project Structure
+
+- `notebooks/dc_bikeshare_case_study.ipynb`: main recruiter-facing case study notebook
+- `app.py`: Streamlit dashboard for interactive portfolio review
+- `src/bikeshare_analysis.py`: reusable analysis, feature engineering, modeling, and figure generation code
+- `src/dashboard_utils.py`: dashboard-specific helpers for filtering, Plotly charts, and scenario prediction
+- `outputs/figures/`: polished charts used in the notebook
+- `outputs/tables/`: model metrics and supporting summary tables
+- `data/processed/hourly_bikeshare_clean.csv`: cleaned analytical dataset
+- `archive/`: legacy notebook and earlier artifacts retained for reference
+
+## Portfolio Blurb
+
+This project demonstrates end-to-end data analysis, from cleaning and exploratory analysis through predictive modeling and stakeholder communication. The notebook and dashboard together show how bikeshare usage data can be turned into clear operational insights, interactive exploration, and practical demand forecasts.

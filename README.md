@@ -59,7 +59,7 @@ The Streamlit dashboard turns the analysis into an interactive portfolio piece. 
 
 Main app file:
 
-- `app.py`
+- `dc-bikeshare.py`
 
 ## Limitations
 
@@ -91,13 +91,13 @@ jupyter notebook notebooks/dc_bikeshare_case_study.ipynb
 Run the dashboard:
 
 ```bash
-streamlit run app.py
+streamlit run dc-bikeshare.py
 ```
 
 ## Project Structure
 
 - `notebooks/dc_bikeshare_case_study.ipynb`: main recruiter-facing case study notebook
-- `app.py`: Streamlit dashboard for interactive portfolio review
+- `dc-bikeshare.py`: Streamlit dashboard for interactive portfolio review
 - `src/bikeshare_analysis.py`: reusable analysis, feature engineering, modeling, and figure generation code
 - `src/dashboard_utils.py`: dashboard-specific helpers for filtering, Plotly charts, and scenario prediction
 - `outputs/figures/`: polished charts used in the notebook

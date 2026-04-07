@@ -27,11 +27,15 @@ TABLE_DIR = ROOT_DIR / "outputs" / "tables"
 
 PALETTE = {
     "ink": "#0f172a",
+    "ink_soft": "#334155",
     "blue": "#1d4ed8",
     "teal": "#0f766e",
     "orange": "#ea580c",
     "slate": "#64748b",
     "cloud": "#e2e8f0",
+    "surface": "#ffffff",
+    "surface_soft": "#f8fafc",
+    "grid": "rgba(148,163,184,0.22)",
 }
 
 METRIC_MAP = {
@@ -172,14 +176,41 @@ def make_prediction_row(
 
 def theme_figure(fig: go.Figure) -> go.Figure:
     fig.update_layout(
+        template="plotly_white",
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="white",
-        font={"family": "Arial", "color": PALETTE["ink"]},
-        margin={"l": 20, "r": 20, "t": 60, "b": 20},
-        hoverlabel={"bgcolor": "white"},
+        plot_bgcolor=PALETTE["surface"],
+        font={"family": "Arial, sans-serif", "color": PALETTE["ink"]},
+        title={"font": {"size": 20, "color": PALETTE["ink"]}, "x": 0, "xanchor": "left"},
+        margin={"l": 20, "r": 20, "t": 64, "b": 20},
+        hoverlabel={
+            "bgcolor": PALETTE["surface"],
+            "bordercolor": PALETTE["cloud"],
+            "font": {"color": PALETTE["ink"]},
+        },
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.02,
+            "x": 0,
+            "bgcolor": "rgba(255,255,255,0.85)",
+            "bordercolor": "rgba(148,163,184,0.2)",
+            "borderwidth": 1,
+        },
     )
-    fig.update_xaxes(showgrid=False, zeroline=False)
-    fig.update_yaxes(gridcolor="rgba(148,163,184,0.18)", zeroline=False)
+    fig.update_xaxes(
+        showgrid=False,
+        zeroline=False,
+        linecolor="rgba(148,163,184,0.28)",
+        tickfont={"color": PALETTE["ink_soft"]},
+        title_font={"color": PALETTE["ink_soft"]},
+    )
+    fig.update_yaxes(
+        gridcolor=PALETTE["grid"],
+        zeroline=False,
+        linecolor="rgba(148,163,184,0.28)",
+        tickfont={"color": PALETTE["ink_soft"]},
+        title_font={"color": PALETTE["ink_soft"]},
+    )
     return fig
 
 
@@ -199,7 +230,7 @@ def line_daily_demand(df: pd.DataFrame, metric_col: str) -> go.Figure:
         labels={"value": "Daily rides", "dteday": "Date", "variable": ""},
     )
     fig.update_traces(line={"width": 2.5})
-    fig.update_layout(title="Ridership over time", legend={"orientation": "h", "y": 1.08, "x": 0})
+    fig.update_layout(title="Ridership over time")
     return theme_figure(fig)
 
 

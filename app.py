@@ -46,16 +46,62 @@ def inject_styles() -> None:
     st.markdown(
         f"""
         <style>
+        :root {{
+            --app-bg: #ffffff;
+            --app-bg-soft: #f8fafc;
+            --card-bg: rgba(255,255,255,0.96);
+            --card-border: rgba(148,163,184,0.22);
+            --text-strong: {PALETTE["ink"]};
+            --text-body: #334155;
+            --text-muted: #64748b;
+            --shadow-soft: 0 14px 36px rgba(15, 23, 42, 0.06);
+        }}
         .stApp {{
             background:
-                radial-gradient(circle at top right, rgba(59,130,246,0.08), transparent 28%),
-                linear-gradient(180deg, #f8fafc 0%, #eef4f7 100%);
+                radial-gradient(circle at top right, rgba(37,99,235,0.08), transparent 26%),
+                linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+            color: var(--text-strong);
+        }}
+        [data-testid="stHeader"] {{
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(12px);
+        }}
+        [data-testid="stAppViewContainer"] > .main {{
+            background: transparent;
+        }}
+        .block-container {{
+            padding-top: 2rem;
+            padding-bottom: 3rem;
         }}
         [data-testid="stSidebar"] {{
-            background: linear-gradient(180deg, #0f172a 0%, #111827 100%);
+            background: linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+            border-right: 1px solid rgba(148,163,184,0.2);
         }}
         [data-testid="stSidebar"] * {{
-            color: #e5eefb;
+            color: var(--text-strong);
+        }}
+        [data-testid="stSidebar"] .stMarkdown p,
+        [data-testid="stSidebar"] label,
+        [data-testid="stSidebar"] .stSelectbox label,
+        [data-testid="stSidebar"] .stMultiSelect label,
+        [data-testid="stSidebar"] .stSlider label {{
+            color: var(--text-strong);
+            font-weight: 600;
+        }}
+        [data-testid="stSidebar"] [data-baseweb="select"],
+        [data-testid="stSidebar"] [data-baseweb="tag"],
+        [data-testid="stSidebar"] [data-baseweb="input"] > div,
+        [data-testid="stSidebar"] .stSlider {{
+            background: rgba(255,255,255,0.9);
+            border-radius: 14px;
+        }}
+        [data-testid="stSidebar"] [data-baseweb="select"] > div,
+        [data-testid="stSidebar"] [data-baseweb="input"] input {{
+            color: var(--text-strong);
+        }}
+        h1, h2, h3, h4, h5, h6,
+        p, li, label, .stCaption, .stMarkdown, .stMarkdown p, .stMarkdown li {{
+            color: var(--text-strong);
         }}
         .hero {{
             padding: 1.25rem 0 1.6rem 0;
@@ -79,15 +125,16 @@ def inject_styles() -> None:
         .hero p {{
             font-size: 1rem;
             max-width: 52rem;
-            color: #334155;
+            color: var(--text-body);
             margin: 0;
         }}
         .note {{
-            background: rgba(255,255,255,0.8);
-            border: 1px solid rgba(148,163,184,0.25);
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.94));
+            border: 1px solid rgba(148,163,184,0.22);
             border-radius: 18px;
             padding: 0.95rem 1rem;
-            color: #334155;
+            color: var(--text-body);
+            box-shadow: var(--shadow-soft);
         }}
         .section-label {{
             font-size: 0.76rem;
@@ -104,20 +151,20 @@ def inject_styles() -> None:
             font-weight: 700;
         }}
         .section-copy {{
-            color: #475569;
+            color: var(--text-body);
             max-width: 48rem;
             margin-bottom: 1rem;
         }}
         .metric-shell {{
-            background: rgba(255,255,255,0.88);
-            border: 1px solid rgba(148,163,184,0.2);
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
             border-radius: 18px;
             padding: 1rem 1rem 0.9rem 1rem;
             min-height: 118px;
-            box-shadow: 0 12px 32px rgba(15, 23, 42, 0.05);
+            box-shadow: var(--shadow-soft);
         }}
         .metric-label {{
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 0.83rem;
             text-transform: uppercase;
             letter-spacing: 0.08em;
@@ -130,20 +177,67 @@ def inject_styles() -> None:
             line-height: 1.1;
         }}
         .insight-box {{
-            background: rgba(255,255,255,0.9);
-            border: 1px solid rgba(148,163,184,0.18);
+            background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(248,250,252,0.92));
+            border: 1px solid var(--card-border);
             border-radius: 20px;
             padding: 1rem 1.15rem;
             min-height: 120px;
+            color: var(--text-body);
+            box-shadow: var(--shadow-soft);
         }}
         .insight-box b {{
             color: {PALETTE["ink"]};
         }}
         .caption {{
-            color: #64748b;
+            color: var(--text-muted);
             font-size: 0.92rem;
             margin-top: -0.25rem;
             margin-bottom: 1rem;
+        }}
+        div[data-testid="stPlotlyChart"] {{
+            background: rgba(255,255,255,0.94);
+            border: 1px solid var(--card-border);
+            border-radius: 22px;
+            padding: 0.35rem 0.35rem 0;
+            box-shadow: var(--shadow-soft);
+        }}
+        div[data-testid="stDataFrame"] {{
+            background: rgba(255,255,255,0.96);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+        }}
+        div[data-testid="stDataFrame"] [role="columnheader"],
+        div[data-testid="stDataFrame"] [role="gridcell"] {{
+            color: var(--text-strong);
+            background: #ffffff;
+        }}
+        div[data-testid="stDataFrame"] [role="columnheader"] {{
+            background: #eff6ff;
+            font-weight: 700;
+        }}
+        .stAlert {{
+            background: rgba(255,255,255,0.96);
+            color: var(--text-strong);
+            border: 1px solid var(--card-border);
+        }}
+        .stCaption {{
+            color: var(--text-muted) !important;
+        }}
+        .stSuccess, .stWarning, .stInfo {{
+            color: var(--text-strong);
+        }}
+        .stDateInput input,
+        .stNumberInput input,
+        .stTextInput input,
+        .stSelectbox [data-baseweb="select"] > div,
+        .stMultiSelect [data-baseweb="select"] > div {{
+            color: var(--text-strong);
+            background: rgba(255,255,255,0.96);
+        }}
+        .stSlider [data-baseweb="slider"] {{
+            color: var(--text-strong);
         }}
         </style>
         """,
@@ -323,9 +417,15 @@ def main() -> None:
     with mc2:
         total_metrics = metrics.loc[metrics["target"] == "cnt"].sort_values("RMSE").reset_index(drop=True)
         st.dataframe(
-            total_metrics[["model", "MAE", "RMSE", "R2"]].round(3),
+            total_metrics[["model", "MAE", "RMSE", "R2"]],
             use_container_width=True,
             hide_index=True,
+            column_config={
+                "model": st.column_config.TextColumn("Model"),
+                "MAE": st.column_config.NumberColumn("MAE", format="%.3f"),
+                "RMSE": st.column_config.NumberColumn("RMSE", format="%.3f"),
+                "R2": st.column_config.NumberColumn("R²", format="%.3f"),
+            },
         )
         st.markdown(
             """
